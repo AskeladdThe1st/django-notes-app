@@ -13,23 +13,22 @@ pipeline {
         
         stage('Code') {
             steps{
-                echo "Cloning your Code"
-                git url: "https://github.com/LondheShubham153/django-notes-app.git", branch: "dev"
-                echo "Code has been successfully cloned!"
+                script {
+                    clone("https://github.com/LondheShubham153/django-notes-app.git", "dev")
+                }
             }
         }
         stage('Build') {
             steps{
-                echo "Building the code retrieved from github"
-                sh "docker build -t notes-app:latest ."
+                script{
+                    docker_build("notes-app", "latest", "flokiflopped")
+                }
             }
         }
         stage('Pushing image to DockerHub') {
             steps{
-                withCredentials([usernamePassword('credentialsId':"dockerhub-credentials",passwordVariable:"dockerHubPass",usernameVariable:"dockerHubUser")]){
-                sh "docker tag notes-app:latest ${env.dockerHubUser}/notes-app:latest"
-                sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
-                sh "docker push ${env.dockerHubUser}/notes-app:latest"
+                script{
+                    docker_push("notes-app", "latest", "flokiflopped")
                 }
             }
         }
