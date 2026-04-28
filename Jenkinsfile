@@ -20,16 +20,15 @@ pipeline {
         }
         stage('Build') {
             steps{
-                echo "Building the code retrieved from github"
-                sh "docker build -t notes-app:latest ."
+                scripts{
+                    docker_build("notes-app", "latest", "flokiflopped"
+                }
             }
         }
         stage('Pushing image to DockerHub') {
             steps{
-                withCredentials([usernamePassword('credentialsId':"dockerhub-credentials",passwordVariable:"dockerHubPass",usernameVariable:"dockerHubUser")]){
-                sh "docker tag notes-app:latest ${env.dockerHubUser}/notes-app:latest"
-                sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
-                sh "docker push ${env.dockerHubUser}/notes-app:latest"
+                script{
+                    docker_push("notes-app", "latest", "flokiflopped")
                 }
             }
         }
