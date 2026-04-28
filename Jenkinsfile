@@ -13,14 +13,14 @@ pipeline {
         
         stage('Code') {
             steps{
-                scripts {
-                    clone("https://github.com/LondheShubham153/django-notes-app.git", "main")
+                script {
+                    clone("https://github.com/LondheShubham153/django-notes-app.git", "dev")
                 }
             }
         }
         stage('Build') {
             steps{
-                scripts{
+                script{
                     docker_build("notes-app", "latest", "flokiflopped")
                 }
             }
