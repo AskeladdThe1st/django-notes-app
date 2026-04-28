@@ -21,7 +21,7 @@ pipeline {
         stage('Build') {
             steps{
                 scripts{
-                    docker_build("notes-app", "latest", "flokiflopped"
+                    docker_build("notes-app", "latest", "flokiflopped")
                 }
             }
         }
